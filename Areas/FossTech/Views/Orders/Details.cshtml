@@ -1,0 +1,53 @@
+﻿@model EComDemo.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FistName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FistName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lastname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lastname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Products)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in Model.Products)
+            {
+                <div style="border: solid 1px red; margin: 10px; padding: 10px">
+                    <p>@item.Id</p>
+                    <p>@item.Product.Name</p>
+                    <p>@item.Qty</p>
+                    <p>@item.Product.Price</p>
+
+                </div>
+            }
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
