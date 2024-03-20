@@ -8,4 +8,5 @@ public class Order
     public string Address { get; set; }
 
     public virtual List<OrderProduct> Products { get; set; }
+    public string Userid { get; set; }
 }

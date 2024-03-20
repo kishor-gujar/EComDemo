@@ -1,6 +1,7 @@
 ﻿using EComDemo.Models;
 using EComDemo.ViewModels;
 using Humanizer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
@@ -10,11 +11,13 @@ namespace EComDemo.Controllers
 	public class BuyNowController : Controller
 	{
 		private readonly ApplicationDbContext _context;
+        private UserManager<IdentityUser> _userManager;
 
-		public BuyNowController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public BuyNowController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
 
 		public async Task<IActionResult> Index(int productId, int qty = 1)
 		{
@@ -43,8 +46,11 @@ namespace EComDemo.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var order = new Order
+                var currentUser = await _userManager.GetUserAsync(User);
+
+                var order = new Order
 				{
+					Userid = currentUser.Id,
 					FistName = model.FistName,
 					Lastname = model.Lastname,
 					Address = model.Address,
@@ -73,6 +79,15 @@ namespace EComDemo.Controllers
 
 				_context.OrderProducts.Add(orderProduct);
 				await _context.SaveChangesAsync();
+
+
+
+                //var cartItems = await _context.Carts
+                //    .Where(x => x.UserId == currentUser.Id)
+                //    .ToListAsync();
+
+                //_context.Carts.RemoveRange(cartItems);
+                //await _context.SaveChangesAsync();
 
 				return RedirectToAction(nameof(ThankYou));
 			}
